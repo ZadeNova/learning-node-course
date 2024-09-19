@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Learning Node |<%= title %></title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/new">New Messages</a></li>
+            
+        </ul>
+    </nav>
+    <h2>Index Page for Messages</h2>
+    <% for( let index = 0; index < messages.length; index++ ) { %>
+        <h4><%= messages[index].text %></h4>
+        <p><%= messages[index].user %></p>
+        <p><%= messages[index].added %></p>
+    <% } %>
+    
+</body>
+</html>
