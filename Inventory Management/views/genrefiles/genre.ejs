@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/head.ejs')%>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+    <%- include("../partials/flowbite.ejs") %>
+
+    <div class="flex justify-center tablediv">
+        <div class="flex flex-col">
+          <div class=" overflow-x-auto">
+            <div class="min-w-full inline-block align-middle">
+                <div class="relative  text-gray-500 focus-within:text-gray-900 mb-4">
+                    <div class="absolute inset-y-0 left-1 flex items-center pl-3 pointer-events-none ">
+                        
+                    </div>
+                    <input type="text" id="default-search" class="block w-80 h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Search for company">
+                </div>
+  
+  
+                <div class="overflow-hidden ">
+                    <table class=" w-full rounded-xl">
+                        <thead>
+                            <tr class="bg-gray-300">
+                                <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize"> Genre_ID </th>
+                                <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize"> Genre_Name </th>
+                                <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize"> Actions </th>
+  
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 ">
+                          <% for( let index = 0; index < genres.length; index++ ) { %>
+                              <tr class="bg-gray-100 transition-all duration-500 hover:bg-gray-50">
+                                  <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 "> <%= genres[index].Genre_ID %></td>                            
+                                  <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 "> <%= genres[index].genre_name %></td>
+                                  <td class="p-5">
+                                      <div class="flex items-center gap-1">
+                                          <button class="p-2  rounded-full  group transition-all duration-500  flex item-center">hi</button>
+                                          <button class="p-2 rounded-full  group transition-all duration-500  flex item-center">
+                                            hello
+                                          </button>
+                                      </div>
+  
+  
+                                  </td>
+  
+                              </tr>
+                          <% } %>
+                           
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          </div>
+          </div>
+       
+  
+  
+  
+  
+  
+      </div>
+</body>
+</html>
