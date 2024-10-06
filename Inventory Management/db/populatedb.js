@@ -1,4 +1,4 @@
-const {Client} = require("pg");
+const { Client } = require("pg");
 
 // 3 Tables
 // Games table
@@ -7,11 +7,10 @@ const {Client} = require("pg");
 
 //postgresql://postgres:apple@localhost:5432/InventoryManagementProject
 
-const SQL = 
-`
+const SQL = `
 CREATE TABLE Game
 (
-    "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY,
+    "Game_ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     title varchar(255) NOT NULL,
     description varchar(1000) NOT NULL,
     release_date date NOT NULL,
@@ -23,7 +22,7 @@ CREATE TABLE Game
 INSERT INTO Game (title,description,release_date,developer) VALUES 
 ('Minecraft','A sandbox game', '18-Nov-2011', 'Mojang' );
 
-`
+`;
 
 const SQL2 = `
 CREATE TABLE genre (
@@ -35,7 +34,7 @@ CREATE TABLE genre (
 );
 
 INSERT INTO Genre (genre_name) VALUES ('Survival'),('Action Adventure');
-`
+`;
 
 const SQL3 = `
 
@@ -45,9 +44,8 @@ CREATE TABLE game_genre (
     genre_id INT ,
     PRIMARY KEY (game_genre_id),
 );
-`
-const SQL4 = 
-`
+`;
+const SQL4 = `
 INSERT INTO game_genre (game_id,genre_id) VALUES ((SELECT "Game_ID" FROM game WHERE title = 'Minecraft'), (SELECT "Genre_ID" FROM genre WHERE genre_name = 'Survival'));
 
 INSERT INTO game_genre (game_id,genre_id) VALUES ((SELECT "Game_ID" FROM game WHERE title = 'Minecraft'), (SELECT "Genre_ID" FROM genre WHERE genre_name = 'Action Adventure'));
@@ -56,23 +54,24 @@ INSERT INTO game_genre (game_id,genre_id) VALUES ((SELECT "Game_ID" FROM game WH
 
 `;
 
-
-
 async function main() {
-    console.log("seeding...");
-    const client = new Client({
-        connectionString: 'postgresql://postgres:apple@localhost:5432/InventoryManagementProject'
-    });
-    await client.connect();
-    await client.query(SQL4).then(res => {
-        console.log("Queries executed successfully")
-    }).catch(err => {
-        console.error('Error executing query, ',err)
-    });
-    
-    await client.end();
-    console.log("Done");
+	console.log("seeding...");
+	const client = new Client({
+		connectionString:
+			"postgresql://postgres:apple@localhost:5432/InventoryManagementProject",
+	});
+	await client.connect();
+	await client
+		.query(SQL4)
+		.then((res) => {
+			console.log("Queries executed successfully");
+		})
+		.catch((err) => {
+			console.error("Error executing query, ", err);
+		});
 
+	await client.end();
+	console.log("Done");
 }
 
-main()
+main();

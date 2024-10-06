@@ -1,17 +1,22 @@
-const express = require('express');
-const gameController = require('../controllers/gamecontroller');
-const methodOverride = require('method-override');
+const express = require("express");
+const gameController = require("../controllers/gamecontroller");
+const methodOverride = require("method-override");
 
 const router = express.Router();
 
-//router.use(methodOverride('_method'));
-// Use method override for delete.
 
-router.delete('/delete/:id',gameController.game_delete)
-router.get('/',gameController.game_home)
-router.get('/create',gameController.create_game_get);
+// Delete
+router.delete("/delete/:id", gameController.game_delete);
 
-router.post('/',gameController.create_game_post);
+//Create and View
+router.get("/", gameController.game_home);
+router.get("/create", gameController.create_game_get);
+router.post("/", gameController.create_game_post);
+
+// Update
+router.post("/updategame/:id",gameController.update_game_post);
+router.get("/update/:id", gameController.game_update_get);
+
 
 
 module.exports = router;
