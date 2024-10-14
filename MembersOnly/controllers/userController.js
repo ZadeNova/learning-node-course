@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require('passport-local').Strategy;
 
 function get_signup(req,res){
-    console.log('hi')
+    //console.log('hi')
     res.render("signup",{title: "Sign Up",messages:''});
 }
 
@@ -22,8 +22,9 @@ async function post_signup(req,res){
             req.body.password = hashedPassword
 
             // add new fields for membership and user role first
-            req.body.role = 'normal'
+            req.body.role = 'isAdmin' in req.body ? 'Admin' : 'normal';
             req.body.Membership_status = 'Non-member'
+            
             db.create_user(req.body);
         })
 
@@ -60,7 +61,7 @@ function checkConfirmPassword(req,res,next){
 }
 
 function get_login(req,res){
-    console.log('login page')
+    
     res.render("../views/login.ejs",{title: "Login"});
 }
 
@@ -88,25 +89,54 @@ function get_logout(req,res){
     
 }
 
-function get_index(req,res){
+async function get_index(req,res){
     //console.log(req.user);
-    res.render('../views/index',{title: "Index",login_status: true});
+
+    const msgs  = await db.get_allMessages();
+    console.log('hies')
+    console.log(msgs);
+    console.log('hiaawdawdawdawd')
+    res.render('../views/index',{title: "Index",messages:msgs});
 }
 
+async function get_index_public(req,res){
+    const msgs  = await db.get_allMessages();
+    console.log(msgs)
+    res.render('../views/index-public',{title:"Index",login_status: false,messages:msgs});
+}
 // Auth middleware from tutorial
 
-function isAuth(req,res,next){
+async function isAuth(req,res,next){
     if (req.isAuthenticated()){
-        next()
+        res.locals.login_status = true;
+        res.locals.user = req.session.passport.user;
+        res.locals.isMember = await db.checkMembershipStatus(req.session.passport.user);
         console.log('authenticated!')
+        next()
+        
     }
     else{
         console.log("Not authenticated!")
-        res.render('../views/index',{title: "Index", login_status: false});
+
+        // Find a way to redirect to /index. Cause res.render doesnt activate the index controller
+        // Basically find a way to execute the index controller when user is not logged in.
+        res.redirect('/index-public');
+        //res.redirect('/index');
+        //res.render('../views/index',{title: "Index", login_status: false});
     }
 }
 
-function isAdmin(req,res){
+async function isAdmin(req,res,next){
+
+    const result = await db.checkIfAdmin(req.session.passport.user);
+    if (result){
+        res.locals.isAdmin = true;
+        next()
+    }
+    else{
+        res.locals.isAdmin = false;
+        next()
+    }
 
 }
 
@@ -119,4 +149,6 @@ module.exports = {
     get_logout,
     isAuth,
     checkConfirmPassword,
+    get_index_public,
+    isAdmin,
 }

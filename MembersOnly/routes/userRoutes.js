@@ -21,6 +21,8 @@ router.get('/logout',userController.get_logout);
 
 
 
-router.get('/index', userController.isAuth ,userController.get_index);
+router.get('/index', userController.isAuth ,userController.isAdmin,userController.get_index);
+
+router.get('/index-public',userController.get_index_public);
 
 module.exports = router

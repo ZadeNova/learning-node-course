@@ -1,0 +1,17 @@
+html , body {
+    height:100%;
+}
+
+.messagebox {
+    width:70%;
+    text-align: center;
+}
+
+.message {
+    text-align: left;
+}
+
+.messageinfo {
+    text-align: left;
+    
+}

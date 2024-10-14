@@ -36,13 +36,13 @@ async function verifyCallback(username, password, done) {
 
 
 passport.serializeUser((user, done) => {
-    console.log(user)
+    //console.log(user)
     done(null, user.username)
 });
 
 passport.deserializeUser(async (userId, done) => {
     try{
-        console.log(userId)
+        //console.log(userId)
         const user = await db.checkUser_byUsername(userId);
 
         done(null, user)

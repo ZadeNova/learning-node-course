@@ -3,9 +3,126 @@
     <%- include("./partials/head.ejs") %>
 <body>
     <%- include("./partials/navbar.ejs") %>
+    
+    
+    <div style="text-align: center; margin-top:2.5%">
+    
+        <h3 class="text-3xl font-bold dark:text-white">Welcome <%= user %></h3>
+    
+    </div>
+        
+    
+    <div style="text-align: center; margin-top: 2%;">
+        <h4 class="text-2xl font-bold dark:text-white">Messages</h4>
+    </div>
+    
+    <% if (isMember || isAdmin) { %>
 
+
+        
+
+        <% if (isAdmin) { %>
+
+            <div style="display:flex; justify-content: center; align-items: center; margin-top: 2%;">
+        
+
+                <div class="messagebox">
+    
+    
+                    <% messages.forEach(msgs => { %>
+                        <div class="message">
+                            <h5 class="text-1xl font-bold dark:text-white messageinfo"><%= msgs.title %></h5>
+                            <p><%= msgs.msgcontent %></p>
+                            <h5 class="text-1xl font-bold dark:text-white messageinfo">By: <%= msgs.createdby_user %></h5>
+                            <h5 class="text-1xl font-bold dark:text-white messageinfo">Posted On: <%= moment(msgs.msgtimestamp).format('DD-MM-YYYY')  %></h5>
+                            <button type="button" data-msgid="<%= msgs.msg_id %>" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 deletebtn">Delete</button>
+                        </div>
+                    <% }) %>
+        
+                </div>
+            </div>
+         
+        <% }
+        else { %>
+
+            <div style="display:flex; justify-content: center; align-items: center; margin-top: 2%;">
+        
+
+                <div class="messagebox">
+
+
+                    <% messages.forEach(msgs => { %>
+                        <div class="message">
+                            <h5 class="text-1xl font-bold dark:text-white messageinfo"><%= msgs.title %></h5>
+                            <p><%= msgs.msgcontent %></p>
+                            <h5 class="text-1xl font-bold dark:text-white messageinfo">By: <%= msgs.createdby_user %></h5>
+                            <h5 class="text-1xl font-bold dark:text-white messageinfo">Posted On: <%= moment(msgs.msgtimestamp).format('DD-MM-YYYY')  %></h5>
+                        </div>
+                    <% }) %>
+
+                </div>
+        </div>
+
+        <% } %>
+         
+
+
+     
+    <% } else { %>
+        <div style="display:flex; justify-content: center; align-items: center; margin-top: 2%;">
+
+            <div class="messagebox">
+                
+                
+                <% messages.forEach(msgs => { %>
+                <div class="message">
+                    <h5 class="text-1xl font-bold dark:text-white messageinfo"><%= msgs.title %></h5>
+                    <p><%= msgs.msgcontent %></p>
+                </div>
+            <% }) %>
+        
+        
+            </div>
+
+        
+
+        </div>
+    <% } %>
+     
+
+    
     
 
     <%- include("./partials/flowbite.ejs") %>
+
+    <script>
+        
+        const deleteBtn = document.getElementsByClassName('deletebtn')
+        if(deleteBtn.length !== 0){
+            
+            for (let i = 0; i < deleteBtn.length; i++){
+                const element = deleteBtn[i];
+                element.addEventListener("click", (e) => {
+
+                    const endpoint = `/messages/delete/${element.dataset.msgid}`
+
+                    fetch(endpoint, {
+                        method: "DELETE",
+                    }).then((response => response.json()))
+                    .then(window.location.reload());
+
+                })
+            }
+
+
+
+        }
+        else{
+            console.log('btn does not exist')
+        }
+        
+        
+    </script>
+
 </body>
 </html>

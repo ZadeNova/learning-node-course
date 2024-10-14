@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("./partials/head.ejs") %>
+<body>
+    <%- include("./partials/navbar.ejs") %>
+    
+    <div style="text-align: center; margin-top: 2%;">
+        <h4 class="text-2xl font-bold dark:text-white">Messages</h4>
+    </div>
+
+    <div style="display:flex; justify-content: center; align-items: center; margin-top: 2%;">
+        
+
+        <div class="messagebox">
+
+            <% messages.forEach(msgs => { %>
+                <div class="message">
+                    <h5 class="text-1xl font-bold dark:text-white messageinfo"><%= msgs.title %></h5>
+                    <p><%= msgs.msgcontent %></p>
+                </div>
+            <% }) %>
+
+            
+        </div>
+    </div>
+    
+
+    <%- include("./partials/flowbite.ejs") %>
+</body>
+</html>

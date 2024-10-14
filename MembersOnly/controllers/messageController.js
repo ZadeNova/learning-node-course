@@ -12,11 +12,20 @@ async function get_create_messages(req,res){
 
 
 async function post_create_messages(req,res){
+    console.log(req.body);
+    //console.log(moment().format('DD-MM-YYYY HH:mm:ss'))
+    //console.log(req.session.passport.user);
+    req.body.timestamp = moment().format('DD-MM-YYYY HH:mm:ss')
+    req.body.createdby_user = req.session.passport.user;
+    db.createMessages(req.body)
+    res.redirect("/index");
 
 }
 
 async function delete_messages(req,res){
-
+    console.log('hi im gonna delete u!')
+    const id = req.params.id;
+    db.deleteMessages(id)
 }
 
 module.exports = {
