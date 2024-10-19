@@ -6,16 +6,50 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 
 
-function get_signup(req,res){
+async function get_signup(req,res){
 
-
-    res.render("../views/user/signup.ejs",{title: "Sign Up",messages:''});
+    console.log(await prisma.userTable.findMany())
+    res.render("../views/user/signup",{title: "Sign Up",messages:''});
 }
 
 async function post_signup(req,res){ 
 
-    console.log(req.body);
+    const {Email , Firstname , Lastname , password } = req.body
+    console.log(Email)
+    console.log(Firstname)
+    console.log(Lastname)
+    console.log(password)
+    let user = await prisma.userTable.findFirst({where: {
+        email: Email
+    }});
+    if (user){
+        throw Error("User already exists!")
+    }
+
+    try{
+        bcrypt.hash(password, 10, async(err, hashedpassword) => {
+            if(err){
+                console.error(err);
+            }
+            
+            await prisma.userTable.create({
+                data:{
+                    email: Email,
+                    name: `${Firstname} ${Lastname}`,
+                    password: hashedpassword
+                }
+            });
+
+            
+        })
+
+        res.redirect("/login");
+    }catch(err){
+        console.log(err);
+    }
+
     
+
 
 }
 

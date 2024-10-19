@@ -30,7 +30,7 @@ function checkConfirmPassword(req,res,next){
         // req.flash('Firstname',Firstname);
         // req.flash('Lastname',Lastname);
         
-        res.render('signup',{title:"Sign up",messages: messages});
+        res.render('../views/user/signup.ejs',{title:"Sign up",messages: messages});
     }
 }
 
