@@ -36,22 +36,25 @@ model Session {
 
 
 model fileTable {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   file_name String @unique
   file_type String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   creator userTable @relation(fields: [userID],references: [id])
   userID Int
-  Folder folderTable @relation(fields:[fileID],references: [id])
-  fileID Int
+  Folder folderTable @relation(fields:[folderID],references: [id])
+  folderID String
 }
 
 model folderTable {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   folder_name String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  folder_size Bytes
+  folder_size Bytes?
+  parent folderTable? @relation("folderChildren", fields: [parentId],references: [id])
+  parentId String?
+  children folderTable[] @relation("folderChildren")
   files fileTable[]
 }

@@ -53,8 +53,10 @@ async function post_signup(req,res){
 
 }
 
-function get_login(req,res){
+async function get_login(req,res){
 
+    
+    //console.log(user);
     res.render("../views/user/login.ejs",{title: "Login"});
 }
 

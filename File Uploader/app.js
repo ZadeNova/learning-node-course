@@ -19,7 +19,7 @@ const moment = require("moment");
 app.locals.moment = moment;
 const session = require("express-session");
 const passport = require("passport");
-
+const LocalStrategy = require('passport-local').Strategy;
 
 app.use(session({secret: "cats" , resave: false, saveUninitialized: false}));
 app.use(passport.session());
@@ -28,12 +28,16 @@ app.listen("8080", () => console.log("Listening on port 8080"));
 
 // Routes
 const userRoutes = require("./routes/userRoute");
-
+const folderRoutes = require("./routes/folderRoutes");
 
 // Useful middleware
 const middleware = require("./controllers/usefulmiddleware");
 const { render } = require("ejs");
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient();
 
+
+// Setup global variable for breadcrumb
 
 
 
@@ -41,25 +45,39 @@ const { render } = require("ejs");
 // Index public is for users that have not login.
 app.get('/',(req,res) => res.redirect('/index-public'));
 
-// Index controller
+// Index controllers
 
 async function get_index(req,res){
-	res.render("index",{title:"Home"});
+	let folderList;
+	try {
+		folderList = await prisma.folderTable.findMany();
+		console.log(folderList);
+	}
+	catch(err){
+		console.error(err);
+	}
+	
+
+	res.render("index",{title:"Home",folderList: folderList,folder_view: false});
 }
 
 async function get_index_public(req,res){
 	res.render("index-public",{title:"Home",login_status: false});
 }
 
+
 app.get('/index', middleware.isAuth , get_index);
 app.get('/index-public',get_index_public);
 
 app.use('/',userRoutes);
-
+app.use('/folder',folderRoutes);
 
 // nOTES TO MYSELF
 // use prisma client the same way we use db.[functions]
 // Do a CRUD for a file and folder.
 // Ensure that you have changed the databse url link when using laptop
 // Ensure that u have created a database called FileUploader in laptop.
-// Find a way to store session in database?
+
+
+// Ensure that you can add folder and child folders.
+

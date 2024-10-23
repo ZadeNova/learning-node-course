@@ -4,8 +4,42 @@
 <body>
     <%- include("./partials/navbar.ejs") %>
 
+    <div class="content">
+
+    <div class="display-headers">
+        <div>
+            Folder Name
+        </div>
+        <div>
+            Folder Size
+        </div>
+        <div>
+            Created
+        </div>
+    </div>
+        
+        
+                <% folderList.forEach(folder => { %>
+                
+                    <div class="display-folders-body">
+
+                        <a class="folder-container" href="/folder/<%= folder.id %>">
+                            <div class="foldername"><%= folder.folder_name %></div>
+                            <div class="foldersize"><%= folder.folder_size ? folder.folder_size : "-" %></div>
+                            <div class="foldercreatedtime"><%= moment(folder.createdAt).format("DD-MM-YYYY HH:mm:ss") %></div>
+                        </a>
 
 
+                    </div>
+            
+            
+            
+                <% }) %>
+            
+        
+
+    </div>
+    
 
 
 
