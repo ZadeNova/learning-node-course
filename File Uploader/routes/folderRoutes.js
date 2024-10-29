@@ -8,6 +8,13 @@ const router = express.Router()
 // CREATE
 router.post('/create',middleware.isAuth,folderController.create_folder);
 
+// EDIT
+
+router.post('/edit/:id',middleware.isAuth,folderController.update_folder);
+
+
+// DELETE
+router.delete('/delete/:id',middleware.isAuth,folderController.delete_folder);
 
 // Get
 router.get('/:id',middleware.isAuth,folderController.get_folder);

@@ -57,7 +57,15 @@ async function get_login(req,res){
 
     
     //console.log(user);
-    res.render("../views/user/login.ejs",{title: "Login"});
+    // Hardcode the login because i dont want to keep typing
+
+    const hardcode = true;
+    if (hardcode){
+        res.render("../views/user/login.ejs",{title: "Login",login:{name:"Zadediangelo@gmail.com",password:"apple"}});
+    }
+
+
+    //res.render("../views/user/login.ejs",{title: "Login"});
 }
 
 function get_logout(req,res){

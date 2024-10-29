@@ -49,8 +49,17 @@ app.get('/',(req,res) => res.redirect('/index-public'));
 
 async function get_index(req,res){
 	let folderList;
+
+	// This query only gets folders that are root folders. Root folders have no parentID and their parentID is null.
+
 	try {
-		folderList = await prisma.folderTable.findMany();
+		folderList = await prisma.folderTable.findMany({
+			where:{
+				parentId:{
+					equals: null,
+				}
+		}});
+		
 		console.log(folderList);
 	}
 	catch(err){
@@ -80,4 +89,10 @@ app.use('/folder',folderRoutes);
 
 
 // Ensure that you can add folder and child folders.
+
+// Notes to myself 29/10/2024
+// Connect to supabase. 
+// Learn about supabase and create a table for the file.
+// Do CRUD for files.
+
 
