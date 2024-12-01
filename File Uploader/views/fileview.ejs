@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("./partials/head.ejs") %>
+<body>
+    <%- include("./partials/navbar.ejs") %>
+
+    <div style="text-align: center; width:60%; margin: 0 auto;">
+    <div>
+        <img class="h-auto max-w-lg mx-auto" src="<%= file_url %>" alt="image description">
+    </div>
+
+
+
+    <div class="fileproperties">
+
+        <div>
+            <b>File Name:</b> <%= file_name %>
+        </div>
+        <div>
+            <b>File Size:</b> <%=  (file_size/(1024*1024)).toFixed(2) %> MB
+        </div>
+        <div>
+            <b>Type:</b> <%= file_type %>
+        </div>
+        <div>
+            <b>Date uploaded:</b> <%= moment(file_uploadedDate).format("DD-MM-YYYY HH:mm:ss")  %>
+        </div>
+        
+        
+        
+    </div>
+
+
+
+    </div>
+
+
+
+
+    <%- include('./partials/editFolderModal.ejs') %>
+    <%- include('./partials/editFileModal.ejs') %>
+    <%- include("./partials/flowbite.ejs") %>
+</body>
+</html>

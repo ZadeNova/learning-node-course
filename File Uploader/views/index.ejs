@@ -12,8 +12,8 @@
 
         <div class="folder-container">
             <div class="grid grid-cols-3 display-headers" style="width: 70%">
-              <div class="header-item">Folder Name</div>
-              <div class="header-item">Folder Size</div>
+              <div class="header-item">Folder/File Name</div>
+              <div class="header-item">Folder/File Size</div>
               <div class="header-item">Created</div>
             </div>
           
@@ -45,18 +45,48 @@
 
                 </div>
               <% }) %>
+
+
+              <% fileList.forEach(file => { %>
+                <div class="folder-item">
+                  <a href="/file/viewfile/<%= file.id %>" class="grid grid-cols-3">
+                    <div class="folder-name">
+                      <%= file.file_name %>
+                    </div>
+                    <div class="folder-size">
+                      <%= (file.file_size/(1024*1024)).toFixed(2) %> MB
+                    </div>
+                    <div class="folder-created-at">
+                      <%= moment(file.createdAt).format("DD-MM-YYYY HH:mm:ss") %>
+                    </div>
+
+                    
+                    
+                    
+                    
+                  </a>
+                 
+                  <div>
+                  <button type="button" onclick="editFile(this)" data-modal-target="edit-file-modal" data-modal-toggle="edit-file-modal" data-fileid="<%= file.id %>" data-filename="<%= file.file_name %>" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Rename</button>
+                    
+                  <button type="button" onclick="deleteFile(this)" data-fileid="<%= file.id %>" data-filename="<%= file.file_name %>" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>
+                  
+                  <a href="<%= file.filedownloadURL %>">
+                  <button type="button" onclick="" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Download</button>
+                  </a>
+                 </div>
+
+                </div>
+              <% }) %>
+
             </div>
         </div>
 
     <%- include('./partials/editFolderModal.ejs') %>
+    <%- include('./partials/editFileModal.ejs') %>
     </div> 
     
-    <script>
 
-
-        
-        
-    </script>
 
 
 

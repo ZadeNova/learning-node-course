@@ -1,7 +1,14 @@
 const { PrismaClient } = require('@prisma/client');
 const { connect } = require('http2');
 const prisma = new PrismaClient();
-
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: 'dsj8ktewz',
+    api_key:process.env.CLOUDINARY_KEY,
+    api_secret:process.env.CLOUDINARY_SECRET,
+    secure: true,
+    
+})
 
 async function create_folder(req,res){
     console.log(req.body);
@@ -136,6 +143,25 @@ async function get_folder(req,res){
     }catch(err){
         console.error(err);
     }
+
+    let files_underFolder;
+    try{
+        files_underFolder = await prisma.fileTable.findMany({
+            where:{
+                folderID:{
+                    equals: currentDir
+                }
+            }
+        })
+    }catch(err){
+        console.error(err);
+    }
+
+    for (let i = 0; i < files_underFolder.length; i++){
+        files_underFolder[i].filedownloadURL = cloudinary.url(extractFileName(files_underFolder[i].file_url),{flags:'attachment'});
+    }
+
+    console.log(files_underFolder);
     //console.log(children)
 
     res.render('folderview',{
@@ -144,13 +170,15 @@ async function get_folder(req,res){
         isRoot: isRootFolder,
         currentDir: currentDir,
         children: children,
-        completedBreadcrumb: completedBreadcrumb
+        files_underFolder: files_underFolder,
+        completedBreadcrumb: completedBreadcrumb,
+
     });
 
 }
 
 async function update_folder(req,res){
-    console.log('hadjkadahkjdawjkdawhjkda')
+    
     const folderID_beingEdited = req.params.id;
     //console.log(folderID);
     //console.log(req.body);
@@ -202,12 +230,6 @@ async function delete_folder(req,res){
     // This is solved by OnDelete: Cascade in Prisma Schema
     try{
 
-        const folder_beingdeleted = await prisma.folderTable.findUnique({
-            where: {
-                id: req.params.id,
-            }
-        })
-
         
 
         await prisma.folderTable.delete(
@@ -215,15 +237,6 @@ async function delete_folder(req,res){
                 id: req.params.id,
             }}
         )
-
-        // if ((folder_beingdeleted.parentId === null)){
-        //     console.log('redirecteds')
-        //     res.redirect('/index')
-        // }
-        // else{
-            
-        //     res.redirect(`/folder/${folder_beingdeleted.parentId}`)
-        // }
 
     }
     catch(err){
@@ -270,6 +283,21 @@ async function find_parents(id,breadCrumb_array = []){
     }
 }
 
+// This function extracts the cloudinary public file name. The name will be without the file extension.
+function extractFileName(url){
+
+
+    const startIndex = url.lastIndexOf("/") + 1;
+
+    const endIndex = url.length;
+    const nameWithFileExtension = url.substring(startIndex,endIndex);
+    
+
+
+    return nameWithFileExtension.substring(0,nameWithFileExtension.indexOf("."))
+
+
+}
 
 module.exports = {
     create_folder,

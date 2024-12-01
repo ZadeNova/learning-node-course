@@ -39,12 +39,14 @@ model fileTable {
   id String @id @default(uuid())
   file_name String @unique
   file_type String
+  file_url String
+  file_size Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   creator userTable @relation(fields: [userID],references: [id])
   userID Int
-  Folder folderTable @relation(fields:[folderID],references: [id])
-  folderID String
+  Folder folderTable? @relation(fields:[folderID],references: [id])
+  folderID String?
 }
 
 model folderTable {

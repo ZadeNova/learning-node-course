@@ -1,5 +1,6 @@
 html, body {
     height: 100%;
+    background-color: #F4F3F2;
 }
 
 /* Styling the display folders */
@@ -82,3 +83,14 @@ html, body {
 
 
 /* Styling the breadcrumb */
+
+
+.fileproperties{
+    text-align:center;
+    margin: 5% auto;
+}
+
+.fileproperties > div {
+    display: block;
+    text-align: left;
+}
