@@ -12,13 +12,13 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import axios from "axios";
 export function SignInForm() {
-	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleUsernameChange = (event) => {
-		setUsername(event.target.value);
+	const handleEmailChange = (event) => {
+		setEmail(event.target.value);
 	};
 
 	const handlePasswordChange = (event) => {
@@ -27,7 +27,32 @@ export function SignInForm() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(username, password);
+
+		// Basic input validation
+		let hasErrors = false;
+
+		if (!hasErrors) {
+			// If all validations pass, proceed with the API request
+			// ... (your API request code)
+			const userData = {
+				email: email,
+				password: password,
+			};
+			console.log(email, password);
+			axios
+				.post("http://localhost:8080/users/login", userData)
+				.catch((error) => {
+					if (error.response) {
+						console.error(error.response.data.message);
+					}
+				});
+
+			// Clear the form
+
+			setPassword("");
+			setEmail("");
+		}
+		console.log(email, password);
 	};
 
 	return (
@@ -46,15 +71,15 @@ export function SignInForm() {
 				</Typography>
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
-						placeholder="Enter username"
+						placeholder="Enter email"
 						fullWidth
 						required
 						autoFocus
 						variant="outlined"
-						label="Username"
+						label="Email"
 						sx={{ mb: 2 }}
-						value={username}
-						onChange={handleUsernameChange}
+						value={email}
+						onChange={handleEmailChange}
 					/>
 					<TextField
 						placeholder="Enter password"
@@ -75,7 +100,7 @@ export function SignInForm() {
 				</Box>
 				<Grid2 container justifyContent={"space-between"} sx={{ mt: 1 }}>
 					<Grid2 item="true">
-						<Link to="/forgot">Forgot Password</Link>
+						<Link to="/">Home</Link>
 					</Grid2>
 					<Grid2 item="true">
 						<Link to="/signup">Sign Up</Link>

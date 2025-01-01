@@ -49,7 +49,16 @@ function App() {
 }
 
 // Fix navbar first onto app
-// After that make the signup form and signin form. [Done]
-// Setup backend api to handle users. Now need to create createuser and login user.
+// After that make the signup form and signin form. [Done] [ Signin form needs form validation too. Signup form needs to ]
+// Setup backend api to handle users. Now need to create createuser and login user. [ Api for create user done, Just need to add password encryption. ]
+// For Navbar implement conditional logic that checks whether user is loggedin. If user is loggedin display navbar before signin.
+// Edit the navbar to link to signup and signin.
 
+//TODO Setup backend API to login users.
+//TODO Encrypt password
+//TODO find an authentication library for frontend and backend?
+//TODO Implement conditional logic that checks whether user is loggedin. Display different navbars for different states.
+//* 22/12/2024 11:50pm
+
+//TODO Find a way to display error of login in the frontend.
 export default App;

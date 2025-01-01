@@ -1,3 +1,4 @@
+"use client";
 import {
 	Avatar,
 	Container,
@@ -12,26 +13,86 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
+import { useForm, Controller } from "react-hook-form";
 
 export function SignUpForm() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
+	//const { register, handleSubmit, errors } = useForm();
+	// Validators
+	const [usernameError, setUsernameError] = useState("");
+	const [emailError, setEmailError] = useState("");
+	const [passwordError, setPasswordError] = useState("");
+
 	const handleUsernameChange = (event) => {
 		setUsername(event.target.value);
+		if (username >= 1) {
+			setUsernameError("");
+		}
 	};
 
 	const handlePasswordChange = (event) => {
 		setPassword(event.target.value);
+
+		if (password >= 1) {
+			setPasswordError("");
+		}
 	};
 
 	const handleEmailChange = (event) => {
 		setEmail(event.target.value);
+		if (email >= 1) {
+			setEmailError("");
+		}
 	};
+
+	// Validation for form inputs
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(username, password, email);
+
+		// Basic input validation
+		let hasErrors = false;
+		if (!username) {
+			setUsernameError("Username is required");
+			hasErrors = true;
+		} else {
+			setUsernameError("");
+		}
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!email || !emailRegex.test(email)) {
+			setEmailError("Invalid email address");
+			hasErrors = true;
+		} else {
+			setEmailError("");
+		}
+
+		if (!password) {
+			setPasswordError("Password is required");
+			hasErrors = true;
+		} else {
+			setPasswordError("");
+		}
+
+		if (!hasErrors) {
+			// If all validations pass, proceed with the API request
+			// ... (your API request code)
+			const userData = {
+				username: username,
+				password: password,
+				email: email,
+			};
+			console.log(username, password, email);
+			axios.post("http://localhost:8080/users/createUser", userData);
+
+			// Clear the form
+			setEmail("");
+			setPassword("");
+			setUsername("");
+		}
 	};
 
 	return (
@@ -56,7 +117,7 @@ export function SignUpForm() {
 						sx={{ mt: 1 }}
 					>
 						<TextField
-							placeholder="Enter username"
+							placeholder="Enter Username"
 							fullWidth
 							required
 							autoFocus
@@ -65,7 +126,9 @@ export function SignUpForm() {
 							onChange={handleUsernameChange}
 							variant="outlined"
 							label="Username"
+							name="username"
 						/>
+						{usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
 						<TextField
 							placeholder="Enter Email"
 							fullWidth
@@ -75,7 +138,9 @@ export function SignUpForm() {
 							onChange={handleEmailChange}
 							variant="outlined"
 							label="Email"
+							name="email"
 						/>
+						{emailError && <p style={{ color: "red" }}>{emailError}</p>}
 						<TextField
 							placeholder="Enter password"
 							fullWidth
@@ -84,7 +149,9 @@ export function SignUpForm() {
 							onChange={handlePasswordChange}
 							variant="outlined"
 							label="Password"
+							name="password"
 						/>
+						{passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
 						<FormControlLabel
 							control={<Checkbox value="remember" color="primary" />}
 							label="Remember Me"
@@ -95,7 +162,7 @@ export function SignUpForm() {
 					</Box>
 					<Grid2 container justifyContent={"space-between"} sx={{ mt: 1 }}>
 						<Grid2 item="true">
-							<Link to="/forgot">Forgot Password</Link>
+							<Link to="/">Home</Link>
 						</Grid2>
 						<Grid2 item="true">
 							<Link to="/signin">Sign In</Link>
